@@ -33,7 +33,7 @@ public static class TestLoader
                         _tests.Add(
                             new TestFunction()
                             {
-                                Name = ((CSTestFunctionAttribute)attribute[0]).Name,
+                                Name = method.Name,
                                 Type = method.DeclaringType,
                                 Method = method
                             }
@@ -60,10 +60,5 @@ public class TestFunction
 [AttributeUsage(AttributeTargets.Method)]
 public class CSTestFunctionAttribute : Attribute
 {
-    public string Name { get; set; }
-
-    public CSTestFunctionAttribute(string name = "")
-    {
-        Name = name;
-    }
+    public CSTestFunctionAttribute() { }
 }
