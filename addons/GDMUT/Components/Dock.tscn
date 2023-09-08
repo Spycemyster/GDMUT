@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://54jjjcfigtr1"]
+
+[ext_resource type="Script" path="res://addons/MonoTest/Components/Dock.cs" id="1_fsuvr"]
+[ext_resource type="PackedScene" uid="uid://bjcn5jqvgqj8c" path="res://addons/MonoTest/Components/TestResult.tscn" id="2_7qv0t"]
+
+[node name="C# Testing" type="VBoxContainer" node_paths=PackedStringArray("_runTests", "_loadTests", "_testList")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fsuvr")
+_runTests = NodePath("RunTests")
+_loadTests = NodePath("LoadTests")
+_testList = NodePath("VBoxContainer/MarginContainer/TestList")
+_testResultScene = ExtResource("2_7qv0t")
+
+[node name="LoadTests" type="Button" parent="."]
+layout_mode = 2
+text = "Load Tests"
+
+[node name="RunTests" type="Button" parent="."]
+layout_mode = 2
+text = "Run Tests"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Title" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Tests[/center]"
+fit_content = true
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="TestList" type="VBoxContainer" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2

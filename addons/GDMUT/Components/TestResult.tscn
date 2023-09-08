@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjcn5jqvgqj8c"]
+
+[ext_resource type="Script" path="res://addons/MonoTest/Components/TestResult.cs" id="1_g0pip"]
+[ext_resource type="PackedScene" uid="uid://du5difhdung5x" path="res://addons/MonoTest/Components/MethodResult.tscn" id="2_sx8xf"]
+
+[node name="TestResult" type="VBoxContainer" node_paths=PackedStringArray("_typeName", "_methodList")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -727.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_g0pip")
+_typeName = NodePath("Type")
+_methodList = NodePath("TestFunctions")
+_methodResultScene = ExtResource("2_sx8xf")
+
+[node name="Type" type="RichTextLabel" parent="."]
+layout_mode = 2
+bbcode_enabled = true
+text = "[center]Type Name[/center]"
+fit_content = true
+
+[node name="TestFunctions" type="VBoxContainer" parent="."]
+layout_mode = 2
