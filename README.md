@@ -2,6 +2,17 @@
 
 A unit testing framework for C# scripts in Godot.
 
+## Features
+### Visual
+
+A minimal and simple user-interface that displays all the unit tests and results all in a single dock.
+
+![ui](./docs/assets/image.png)
+
+### Simple To Use
+
+Minimal overhead added to create unit tests. Declare a unit test function by adding a ```[CSTestFunction]``` onto a boolean, static, and parameterless function. After that, you can load and run your tests effortlessly.
+
 ## How to Use
 1. Press the build button before enabling the plugin. This is to allow the plugin to build the necessary files to run.
 2. Ensure the plugin is enabled in the Godot editor.
