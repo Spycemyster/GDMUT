@@ -1,29 +1,26 @@
 #if TOOLS
 using Godot;
-using System;
 
-namespace GDMUT;
+namespace GdMUT;
 
 [Tool]
 public partial class GDMUT : EditorPlugin
 {
-    private Control dock;
+    private Control _dock;
 
     public override void _EnterTree()
     {
         base._EnterTree();
-        // Initialization of the plugin goes here.
-        dock = GD.Load<PackedScene>("res://addons/MonoTest/Components/Dock.tscn")
-            .Instantiate<Control>();
-        GD.Print("Hello World");
-        AddControlToDock(DockSlot.RightUl, dock);
+        _dock = GD.Load<PackedScene>("res://addons/GDMUT/Dock.tscn").Instantiate<Control>();
+        AddControlToDock(DockSlot.RightUl, _dock);
+        GD.Print("Successfully loaded GDMUT");
     }
 
     public override void _ExitTree()
     {
         base._ExitTree();
-        RemoveControlFromDocks(dock);
-        dock?.Free();
+        RemoveControlFromDocks(_dock);
+        _dock?.Free();
     }
 }
 #endif

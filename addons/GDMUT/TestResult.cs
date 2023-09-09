@@ -1,14 +1,11 @@
 #if TOOLS
 using Godot;
-using GDMUT;
-using System;
 using System.Collections.Generic;
-using MonoTest;
 
-namespace GDMUT.Components;
+namespace GdMUT.Components;
 
 [Tool]
-public partial class TestResult : VBoxContainer
+public partial class TestResult : Control
 {
     [Export]
     private RichTextLabel _typeName;
@@ -16,8 +13,6 @@ public partial class TestResult : VBoxContainer
     [Export]
     private VBoxContainer _methodList;
 
-    [Export]
-    private PackedScene _methodResultScene;
     private List<(MethodResult, TestFunction)> _functions = new();
     private const string TYPE_NAME_FORMAT = "[b][font_size=24][center]{0}[/center][/font_size][/b]";
     private string _typeNameStr;
@@ -67,7 +62,8 @@ public partial class TestResult : VBoxContainer
 
     public void AddMethodResult(TestFunction function)
     {
-        var methodResult = _methodResultScene.Instantiate<MethodResult>();
+        var methodResultScene = GD.Load<PackedScene>("res://addons/GDMUT/MethodResult.tscn");
+        var methodResult = methodResultScene.Instantiate<MethodResult>();
         methodResult.SetMethodResult(function);
         _methodList.AddChild(methodResult);
         _functions.Add((methodResult, function));

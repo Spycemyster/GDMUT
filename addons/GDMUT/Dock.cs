@@ -1,15 +1,14 @@
 #if TOOLS
 
 using Godot;
-using MonoTest;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace GDMUT.Components;
+namespace GdMUT.Components;
 
 [Tool]
-public partial class Dock : VBoxContainer
+public partial class Dock : Control
 {
     [Export]
     private Button _runTests;
@@ -19,9 +18,6 @@ public partial class Dock : VBoxContainer
 
     [Export]
     private VBoxContainer _testList;
-
-    [Export]
-    private PackedScene _testResultScene;
 
     private List<TestFunction> _tests = new();
     private readonly Dictionary<Type, List<TestFunction>> _testDictionary = new();
@@ -60,10 +56,11 @@ public partial class Dock : VBoxContainer
         }
 
         _testResultDictionary.Clear();
+        var testResultScene = GD.Load<PackedScene>("res://addons/GDMUT/TestResult.tscn");
         foreach (Type type in _testDictionary.Keys)
         {
             var functions = _testDictionary[type];
-            var testResult = _testResultScene.Instantiate<TestResult>();
+            var testResult = testResultScene.Instantiate<TestResult>();
             testResult.SetTypeName(type.Name);
             _testList.AddChild(testResult);
             _testResultDictionary.Add(type, testResult);

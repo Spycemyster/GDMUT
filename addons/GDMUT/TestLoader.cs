@@ -1,9 +1,10 @@
+#if TOOLS
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Godot;
 
-namespace MonoTest;
+namespace GdMUT;
 
 public static class TestLoader
 {
@@ -62,3 +63,4 @@ public class CSTestFunctionAttribute : Attribute
 {
     public CSTestFunctionAttribute() { }
 }
+#endif

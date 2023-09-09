@@ -11,12 +11,16 @@ config_version=5
 [application]
 
 config/name="Gdmut"
-config/features=PackedStringArray("4.2", "GL Compatibility")
+config/features=PackedStringArray("4.2", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [dotnet]
 
 project/assembly_name="Gdmut"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/GDMUT/plugin.cfg")
 
 [rendering]
 

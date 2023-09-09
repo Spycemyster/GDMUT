@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3 uid="uid://cb6qun54vw4nq"]
+
+[ext_resource type="Script" path="res://addons/GDMUT/Dock.cs" id="1_dxr4g"]
+
+[node name="C# Testing" type="ScrollContainer" node_paths=PackedStringArray("_runTests", "_loadTests", "_testList")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -866.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dxr4g")
+_runTests = NodePath("VBoxContainer/Run")
+_loadTests = NodePath("VBoxContainer/Load")
+_testList = NodePath("VBoxContainer/TestList")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Load" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Load Tests"
+
+[node name="Run" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Run"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[font_size=32][center]Tests[/center][/font_size]"
+fit_content = true
+
+[node name="TestList" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3

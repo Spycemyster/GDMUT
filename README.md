@@ -13,6 +13,8 @@ A unit testing framework for C# scripts in Godot.
 
 ## Example Test Functions
 ```c#
+using GdMUT;
+
 public class TestClass
 {
     #region Test Functions
