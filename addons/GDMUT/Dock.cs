@@ -81,28 +81,17 @@ public partial class Dock : Control
         foreach (var test in _tests)
         {
             GD.Print(test.Name);
-            bool isSuccess;
+            Result testResult;
             try
             {
-                isSuccess = (bool)test.Method.Invoke(null, null);
+                testResult = (Result)test.Method.Invoke(null, null);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                isSuccess = false;
+                testResult = new Result(false, $"Exception thrown: {e.Message}");
             }
 
-            if (!isSuccess)
-            {
-                GD.Print("\t-Test Failed");
-                test.Success = false;
-                test.Result = "Failed";
-            }
-            else
-            {
-                GD.Print("\t-Test Passed");
-                test.Success = true;
-                test.Result = "Passed";
-            }
+            test.Result = testResult;
         }
         stopwatch.Stop();
         UpdateUIWithResults();

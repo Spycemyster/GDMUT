@@ -39,7 +39,7 @@ public partial class TestResult : Control
         foreach (var (methodResult, function) in _functions)
         {
             methodResult.Update();
-            numSuccess += function.Success ? 1 : 0;
+            numSuccess += function.Result.IsSuccess ? 1 : 0;
         }
 
         _typeName.Text = string.Format(
