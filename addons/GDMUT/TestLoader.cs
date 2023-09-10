@@ -17,7 +17,16 @@ public static class TestLoader
         for (int assemblyIndex = 0; assemblyIndex < assemblies.Length; assemblyIndex++)
         {
             Assembly assembly = assemblies[assemblyIndex];
-            if (assembly.FullName.StartsWith("System.") || assembly.FullName.Equals("System"))
+            if (
+                assembly.FullName.StartsWith("System.")
+                || assembly.FullName.Equals("System")
+                || assembly.FullName.StartsWith("Microsoft.")
+                || assembly.FullName.StartsWith("GodotSharp")
+                || assembly.FullName.StartsWith("GodotTools")
+                || assembly.FullName.StartsWith("GodotPlugins")
+                || assembly.FullName.StartsWith("JetBrains")
+                || assembly.FullName.Equals("netstandard")
+            )
             {
                 continue;
             }
