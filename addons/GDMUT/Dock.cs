@@ -4,6 +4,8 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GdMUT.Components;
 
@@ -73,13 +75,14 @@ public partial class Dock : Control
         GD.Print($"Loading tests took {stopwatch.ElapsedMilliseconds}ms");
     }
 
-    private void RunTests()
+    private const int NUM_THREADS = 4;
+    private const int MIN_TESTS_FOR_MULTITHREADING = 64;
+
+    private void RunTestsInRange(int startIndex, int endIndex)
     {
-        var stopwatch = new Stopwatch();
-        stopwatch.Start();
-        GD.Print("Run Tests");
-        foreach (var test in _tests)
+        for (int testIndex = startIndex; testIndex < endIndex; testIndex++)
         {
+            var test = _tests[testIndex];
             GD.Print(test.Name);
             Result testResult;
             try
@@ -92,6 +95,42 @@ public partial class Dock : Control
             }
 
             test.Result = testResult;
+        }
+    }
+
+    private void RunTests()
+    {
+        if (_tests.Count == 0)
+        {
+            GD.Print("No tests loaded");
+            return;
+        }
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+
+        if (_tests.Count >= MIN_TESTS_FOR_MULTITHREADING)
+        {
+            GD.Print("Run Tests multithreaded");
+            Thread[] threads = new Thread[NUM_THREADS];
+            int testsPerThread =
+                _tests.Count / NUM_THREADS + (_tests.Count % NUM_THREADS > 0 ? 1 : 0);
+            for (int threadIndex = 0; threadIndex < NUM_THREADS; threadIndex++)
+            {
+                int startIndex = threadIndex * testsPerThread;
+                int endIndex = Math.Min((threadIndex + 1) * testsPerThread, _tests.Count);
+                threads[threadIndex] = new Thread(() => RunTestsInRange(startIndex, endIndex));
+                threads[threadIndex].Start();
+            }
+
+            foreach (Thread thread in threads)
+            {
+                thread.Join();
+            }
+        }
+        else
+        {
+            GD.Print("Run Tests singlethreaded");
+            RunTestsInRange(0, _tests.Count);
         }
         stopwatch.Stop();
         UpdateUIWithResults();
