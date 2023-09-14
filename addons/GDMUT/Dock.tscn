@@ -2,16 +2,17 @@
 
 [ext_resource type="Script" path="res://addons/GDMUT/Dock.cs" id="1_dxr4g"]
 
-[node name="C# Testing" type="ScrollContainer" node_paths=PackedStringArray("_filter", "_multithreadedEnabled", "_runTests", "_loadTests", "_testList")]
+[node name="C# Testing" type="ScrollContainer" node_paths=PackedStringArray("_filter", "_multithreadedEnabled", "_numThreads", "_runTests", "_loadTests", "_testList")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -866.0
+offset_right = -835.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_dxr4g")
-_filter = NodePath("VBoxContainer/HBoxContainer/LineEdit")
-_multithreadedEnabled = NodePath("VBoxContainer/Multithreading")
+_filter = NodePath("VBoxContainer/HBoxContainer/Filter")
+_multithreadedEnabled = NodePath("VBoxContainer/HBoxContainer2/Multithreading")
+_numThreads = NodePath("VBoxContainer/HBoxContainer2/HBoxContainer/Threads")
 _runTests = NodePath("VBoxContainer/Run")
 _loadTests = NodePath("VBoxContainer/Load")
 _testList = NodePath("VBoxContainer/TestList")
@@ -34,14 +35,38 @@ bbcode_enabled = true
 text = "[center]Filter[/center]"
 fit_content = true
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+[node name="Filter" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Multithreading" type="CheckBox" parent="VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
+
+[node name="Multithreading" type="CheckBox" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
 tooltip_text = "Enables tests to be run in parallel. Not recommended for low number of tests."
-text = "Multithreaded Run"
+text = "Multithreaded"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer/HBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(73.315, 0)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "Number of threads to use if multithreading is enabled. If not a valid number, then it will run singlethreaded."
+bbcode_enabled = true
+text = "Threads"
+fit_content = true
+
+[node name="Threads" type="LineEdit" parent="VBoxContainer/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+text = "4"
+placeholder_text = "1"
+alignment = 1
 
 [node name="Load" type="Button" parent="VBoxContainer"]
 layout_mode = 2

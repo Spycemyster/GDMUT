@@ -19,6 +19,9 @@ public partial class Dock : Control
     private CheckBox _multithreadedEnabled;
 
     [Export]
+    private LineEdit _numThreads;
+
+    [Export]
     private Button _runTests;
 
     [Export]
@@ -85,8 +88,6 @@ public partial class Dock : Control
         GD.Print($"Loading tests took {stopwatch.ElapsedMilliseconds}ms");
     }
 
-    private const int NUM_THREADS = 4;
-
     private void RunTestsInRange(int startIndex, int endIndex)
     {
         for (int testIndex = startIndex; testIndex < endIndex; testIndex++)
@@ -117,13 +118,17 @@ public partial class Dock : Control
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
-        if (_multithreadedEnabled.ButtonPressed)
+        if (
+            _multithreadedEnabled.ButtonPressed
+            && int.TryParse(_numThreads.Text, out int numThreads)
+            && numThreads > 0
+        )
         {
             GD.Print("Run Tests multithreaded");
-            Thread[] threads = new Thread[NUM_THREADS];
+            Thread[] threads = new Thread[numThreads];
             int testsPerThread =
-                _tests.Count / NUM_THREADS + (_tests.Count % NUM_THREADS > 0 ? 1 : 0);
-            for (int threadIndex = 0; threadIndex < NUM_THREADS; threadIndex++)
+                _tests.Count / numThreads + (_tests.Count % numThreads > 0 ? 1 : 0);
+            for (int threadIndex = 0; threadIndex < numThreads; threadIndex++)
             {
                 int startIndex = threadIndex * testsPerThread;
                 int endIndex = Math.Min((threadIndex + 1) * testsPerThread, _tests.Count);

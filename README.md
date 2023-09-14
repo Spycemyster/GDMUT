@@ -3,14 +3,18 @@
 A unit testing framework for C# scripts in Godot.
 
 ## Features
-### Visual
+### Blazingly Fast 🚀
+Optimized and multithreaded to allow you to run your tests at blazingly fast speeds! 🔥🚀
 
+### Visual
 A minimal and simple user-interface that displays all the unit tests and results all in a single dock.
 
 ![ui](./docs/assets/image.png)
 
-### Simple To Use
+### Filtering
+Sometimes you might just want to run a certain set of tests. That's now possible with the filter option. Include a filter to match whatever tests you need to run.
 
+### Simple To Use
 Minimal overhead added to create unit tests. Declare a unit test function by adding a ```[CSTestFunction]``` onto a static, parameterless function with a ```Result``` return type. After that, you can load and run your tests effortlessly.
 
 ## How to Use
@@ -72,7 +76,7 @@ public class TestClass
 NOTE: The '``#region``' and '``#if TOOLS``' preprocessor directives are optional. Just good practice :)
 
 ## Planned Features
-- Multithreaded tests
-- Test filtering (filter by name which tests to run)
+- ~~Multithreaded tests~~
+- ~~Test filtering (filter by name which tests to run)~~
 - Parameterized functions
 - Async functions
