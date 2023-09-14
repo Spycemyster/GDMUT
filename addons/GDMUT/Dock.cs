@@ -13,6 +13,12 @@ namespace GdMUT.Components;
 public partial class Dock : Control
 {
     [Export]
+    private LineEdit _filter;
+
+    [Export]
+    private CheckBox _multithreadedEnabled;
+
+    [Export]
     private Button _runTests;
 
     [Export]
@@ -47,6 +53,10 @@ public partial class Dock : Control
         for (int testIndex = 0; testIndex < _tests.Count; testIndex++)
         {
             TestFunction function = _tests[testIndex];
+            if (!function.Name.Contains(_filter.Text))
+            {
+                continue;
+            }
             if (_testDictionary.TryGetValue(function.Type, out List<TestFunction> testList))
             {
                 testList.Add(function);
@@ -76,7 +86,6 @@ public partial class Dock : Control
     }
 
     private const int NUM_THREADS = 4;
-    private const int MIN_TESTS_FOR_MULTITHREADING = 64;
 
     private void RunTestsInRange(int startIndex, int endIndex)
     {
@@ -108,7 +117,7 @@ public partial class Dock : Control
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
-        if (_tests.Count >= MIN_TESTS_FOR_MULTITHREADING)
+        if (_multithreadedEnabled.ButtonPressed)
         {
             GD.Print("Run Tests multithreaded");
             Thread[] threads = new Thread[NUM_THREADS];
