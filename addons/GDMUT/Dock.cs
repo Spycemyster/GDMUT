@@ -1,17 +1,27 @@
-#if TOOLS
+// Copyright (c) Spencer (Spycemyster) Chang, LLC. All Rights Reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+namespace GdMUT.Components;
 
 using Godot;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace GdMUT.Components;
-
+#if TOOLS
+/// <summary>
+/// The dock UI that contains all the test results and the controls to run tests.
+/// </summary>
 [Tool]
 public partial class Dock : Control
 {
+    private const string TEST_RESULT_SCENE = "res://addons/GDMUT/TestResult.tscn";
+    private readonly System.Collections.Generic.Dictionary<
+        Type,
+        System.Collections.Generic.List<TestFunction>
+    > _testDictionary = new();
+    private readonly System.Collections.Generic.Dictionary<Type, TestResult> _testResultDictionary =
+        new();
+
     [Export]
     private LineEdit _filter;
 
@@ -30,10 +40,11 @@ public partial class Dock : Control
     [Export]
     private VBoxContainer _testList;
 
-    private List<TestFunction> _tests = new();
-    private readonly Dictionary<Type, List<TestFunction>> _testDictionary = new();
-    private readonly Dictionary<Type, TestResult> _testResultDictionary = new();
+    private System.Collections.Generic.List<TestFunction> _tests = new();
 
+    /// <summary>
+    /// Called when the node enters the scene tree for the first time.
+    /// </summary>
     public override void _EnterTree()
     {
         base._EnterTree();
@@ -60,18 +71,27 @@ public partial class Dock : Control
             {
                 continue;
             }
-            if (_testDictionary.TryGetValue(function.Type, out List<TestFunction> testList))
+
+            if (
+                _testDictionary.TryGetValue(
+                    function.Type,
+                    out System.Collections.Generic.List<TestFunction> testList
+                )
+            )
             {
                 testList.Add(function);
             }
             else
             {
-                _testDictionary.Add(function.Type, new List<TestFunction>() { function });
+                _testDictionary.Add(
+                    function.Type,
+                    new System.Collections.Generic.List<TestFunction>() { function }
+                );
             }
         }
 
         _testResultDictionary.Clear();
-        var testResultScene = GD.Load<PackedScene>("res://addons/GDMUT/TestResult.tscn");
+        var testResultScene = GD.Load<PackedScene>(TEST_RESULT_SCENE);
         foreach (Type type in _testDictionary.Keys)
         {
             var functions = _testDictionary[type];
@@ -84,6 +104,7 @@ public partial class Dock : Control
                 testResult.AddMethodResult(function);
             }
         }
+
         stopwatch.Stop();
         GD.Print($"Loading tests took {stopwatch.ElapsedMilliseconds}ms");
     }
@@ -115,6 +136,7 @@ public partial class Dock : Control
             GD.Print("No tests loaded");
             return;
         }
+
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
@@ -127,7 +149,7 @@ public partial class Dock : Control
             GD.Print("Run Tests multithreaded");
             Thread[] threads = new Thread[numThreads];
             int testsPerThread =
-                _tests.Count / numThreads + (_tests.Count % numThreads > 0 ? 1 : 0);
+                (_tests.Count / numThreads) + (_tests.Count % numThreads > 0 ? 1 : 0);
             for (int threadIndex = 0; threadIndex < numThreads; threadIndex++)
             {
                 int startIndex = threadIndex * testsPerThread;
@@ -146,6 +168,7 @@ public partial class Dock : Control
             GD.Print("Run Tests singlethreaded");
             RunTestsInRange(0, _tests.Count);
         }
+
         stopwatch.Stop();
         UpdateUIWithResults();
         GD.Print($"Tests took {stopwatch.ElapsedMilliseconds}ms");

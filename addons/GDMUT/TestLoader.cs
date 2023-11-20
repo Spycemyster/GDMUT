@@ -6,12 +6,19 @@ using Godot;
 
 namespace GdMUT;
 
+/// <summary>
+/// Utility class for loading test functions.
+/// </summary>
 public static class TestLoader
 {
+    /// <summary>
+    /// Search for all tests in the project.
+    /// </summary>
+    /// <returns>List of found test functions.</returns>
     public static List<TestFunction> SearchForAllTests()
     {
         List<TestFunction> tests = new();
-        tests.Clear();
+
         // get all functions with MonoTestFunctionAttribute
         ReadOnlySpan<Assembly> assemblies = AppDomain.CurrentDomain.GetAssemblies();
         for (int assemblyIndex = 0; assemblyIndex < assemblies.Length; assemblyIndex++)
@@ -30,6 +37,7 @@ public static class TestLoader
             {
                 continue;
             }
+
             GD.Print($"Loading tests from {assembly.FullName}");
             LoadFunctionsFromAssembly(tests, assembly);
         }
@@ -69,12 +77,13 @@ public static class TestLoader
                     );
                     continue;
                 }
+
                 tests.Add(
                     new TestFunction()
                     {
                         Name = method.Name,
                         Type = method.DeclaringType,
-                        Method = method
+                        Method = method,
                     }
                 );
             }
@@ -82,9 +91,15 @@ public static class TestLoader
     }
 }
 
+/// <summary>
+/// Attribute for marking a method as a test function.
+/// </summary>
 [AttributeUsage(AttributeTargets.Method)]
 public class CSTestFunctionAttribute : Attribute
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CSTestFunctionAttribute"/> class.
+    /// </summary>
     public CSTestFunctionAttribute() { }
 }
 #endif
